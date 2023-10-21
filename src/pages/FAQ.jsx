@@ -13,9 +13,16 @@ import { ScrollRestoration } from 'react-router-dom';
 const FAQ = () => {
     const [open, setOpen] = useState(0);
     const [openAcc1, setOpenAcc1] = useState(true);
+    const [searchQuery, setSearchQuery] = useState('');
 
     const handleOpen = (value) => setOpen(open === value ? 0 : value);
     const handleOpenAcc1 = () => setOpenAcc1((cur) => !cur);
+    const filteredFAQData = faqData.filter((faq) => {
+        return faq.questions.some((data) =>
+            data.question.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+    });
+
     function Icon({ id, open }) {
         return (
             <svg
@@ -44,6 +51,7 @@ const FAQ = () => {
                     labelProps={{
                         className: "hidden",
                     }}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                 />
             </div>
             <div className='px-5 lg:px-0'>
@@ -51,7 +59,7 @@ const FAQ = () => {
 
 
                     {
-                        faqData.map((faq, index) => {
+                        filteredFAQData.map((faq, index) => {
                             return (
                                 <div key={index} className='bg-white'>
 
